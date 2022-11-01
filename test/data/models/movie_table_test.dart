@@ -1,0 +1,52 @@
+import 'dart:convert';
+
+import 'package:ditonton/data/models/movie_table.dart';
+import 'package:flutter_test/flutter_test.dart';
+
+import '../../json_reader.dart';
+
+void main() {
+  final tModel = MovieTable(
+    id: 1,
+    title: 'testTitle',
+    posterPath: '/path.jpg',
+    overview: 'testOverview',
+  );
+
+  group('fromMap', () {
+    test(
+      'should return a valid model from JSON',
+      () async {
+        // arrange
+        final jsonMap = json.decode(
+          readJson('dummy_data/movie_table.json'),
+        );
+
+        // act
+        final result = MovieTable.fromMap(jsonMap);
+
+        // assert
+        expect(result, tModel);
+      },
+    );
+  });
+
+  group('toJson', () {
+    test(
+      'should return a JSON map containing proper data',
+      () async {
+        // act
+        final result = tModel.toJson();
+
+        // assert
+        final expectedJsonMap = {
+          'id': 1,
+          'title': 'testTitle',
+          'posterPath': '/path.jpg',
+          'overview': 'testOverview',
+        };
+        expect(result, expectedJsonMap);
+      },
+    );
+  });
+}
