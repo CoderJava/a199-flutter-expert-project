@@ -48,3 +48,6 @@ app.*.map.json
 # iOS
 /ios/Podfile
 /ios/Podfile.lock
+
+# Generator
+*.mocks.dart
