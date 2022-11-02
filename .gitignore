@@ -51,6 +51,7 @@ app.*.map.json
 
 # Generator
 *.mocks.dart
+*.g.dart
 
 # lcov
 /coverage/
