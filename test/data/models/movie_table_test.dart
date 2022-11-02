@@ -23,7 +23,7 @@ void main() {
         );
 
         // act
-        final result = MovieTable.fromMap(jsonMap);
+        final result = MovieTable.fromJson(jsonMap);
 
         // assert
         expect(result, tModel);

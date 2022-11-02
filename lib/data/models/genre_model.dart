@@ -1,29 +1,35 @@
 import 'package:ditonton/domain/entities/genre.dart';
 import 'package:equatable/equatable.dart';
+import 'package:json_annotation/json_annotation.dart';
 
+part 'genre_model.g.dart';
+
+@JsonSerializable()
 class GenreModel extends Equatable {
   GenreModel({
     required this.id,
     required this.name,
   });
 
+  @JsonKey(name: 'id')
   final int id;
+  @JsonKey(name: 'name')
   final String name;
 
-  factory GenreModel.fromJson(Map<String, dynamic> json) => GenreModel(
-        id: json["id"],
-        name: json["name"],
-      );
+  factory GenreModel.fromJson(Map<String, dynamic> json) => _$GenreModelFromJson(json);
 
-  Map<String, dynamic> toJson() => {
-        "id": id,
-        "name": name,
-      };
+  Map<String, dynamic> toJson() => _$GenreModelToJson(this);
 
   Genre toEntity() {
-    return Genre(id: this.id, name: this.name);
+    return Genre(
+      id: this.id,
+      name: this.name,
+    );
   }
 
   @override
-  List<Object?> get props => [id, name];
+  List<Object?> get props => [
+        id,
+        name,
+      ];
 }

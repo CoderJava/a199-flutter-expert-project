@@ -1,11 +1,19 @@
 import 'package:ditonton/domain/entities/movie.dart';
 import 'package:ditonton/domain/entities/movie_detail.dart';
 import 'package:equatable/equatable.dart';
+import 'package:json_annotation/json_annotation.dart';
 
+part 'movie_table.g.dart';
+
+@JsonSerializable()
 class MovieTable extends Equatable {
+  @JsonKey(name: 'id')
   final int id;
+  @JsonKey(name: 'title')
   final String? title;
+  @JsonKey(name: 'posterPath')
   final String? posterPath;
+  @JsonKey(name: 'overview')
   final String? overview;
 
   MovieTable({
@@ -22,19 +30,9 @@ class MovieTable extends Equatable {
         overview: movie.overview,
       );
 
-  factory MovieTable.fromMap(Map<String, dynamic> map) => MovieTable(
-        id: map['id'],
-        title: map['title'],
-        posterPath: map['posterPath'],
-        overview: map['overview'],
-      );
+  factory MovieTable.fromJson(Map<String, dynamic> json) => _$MovieTableFromJson(json);
 
-  Map<String, dynamic> toJson() => {
-        'id': id,
-        'title': title,
-        'posterPath': posterPath,
-        'overview': overview,
-      };
+  Map<String, dynamic> toJson() => _$MovieTableToJson(this);
 
   Movie toEntity() => Movie.watchlist(
         id: id,
@@ -44,6 +42,10 @@ class MovieTable extends Equatable {
       );
 
   @override
-  // TODO: implement props
-  List<Object?> get props => [id, title, posterPath, overview];
+  List<Object?> get props => [
+        id,
+        title,
+        posterPath,
+        overview,
+      ];
 }

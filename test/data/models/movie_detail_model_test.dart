@@ -61,7 +61,7 @@ void main() {
       'should return a JSON map containing proper data',
       () async {
         // act
-        final result = tModel.toJson();
+        final result = json.encode(tModel.toJson());
 
         // assert
         final expectedJsonMap = {
@@ -69,7 +69,10 @@ void main() {
           'backdrop_path': '/path.jpg',
           'budget': 0,
           'genres': [
-            {'id': 1, 'name': 'testName'}
+            {
+              'id': 1,
+              'name': 'testName',
+            }
           ],
           'homepage': 'testHomePage',
           'id': 1,
@@ -89,7 +92,7 @@ void main() {
           'vote_average': 1.0,
           'vote_count': 1,
         };
-        expect(result, expectedJsonMap);
+        expect(result, json.encode(expectedJsonMap));
       },
     );
   });

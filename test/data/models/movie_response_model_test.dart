@@ -38,10 +38,9 @@ void main() {
 
   group('toJson', () {
     test('should return a JSON map containing proper data', () async {
-      // arrange
-
       // act
-      final result = tMovieResponseModel.toJson();
+      final result = json.encode(tMovieResponseModel.toJson());
+
       // assert
       final expectedJsonMap = {
         "results": [
@@ -62,7 +61,7 @@ void main() {
           }
         ],
       };
-      expect(result, expectedJsonMap);
+      expect(result, json.encode(expectedJsonMap));
     });
   });
 }
