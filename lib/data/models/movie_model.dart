@@ -60,7 +60,6 @@ class MovieModel extends Equatable {
       genreIds: this.genreIds,
       id: this.id,
       originalTitle: this.originalTitle,
-
       overview: this.overview,
       popularity: this.popularity,
       posterPath: this.posterPath,
