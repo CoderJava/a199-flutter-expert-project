@@ -1,3 +1,5 @@
+import 'package:ditonton/domain/entities/tv.dart';
+import 'package:ditonton/domain/entities/tv_detail.dart';
 import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
 
@@ -25,11 +27,27 @@ class TvTable extends Equatable {
 
   Map<String, dynamic> toJson() => _$TvTableToJson(this);
 
+  factory TvTable.fromEntity(TvDetail tv) {
+    return TvTable(
+      id: tv.id,
+      name: tv.name,
+      posterPath: tv.posterPath,
+      overview: tv.overview,
+    );
+  }
+
+  Tv toEntity() => Tv.watchlist(
+    id: id,
+    overview: overview,
+    posterPath: posterPath,
+    name: name,
+  );
+
   @override
   List<Object?> get props => [
-    id,
-    name,
-    posterPath,
-    overview,
-  ];
+        id,
+        name,
+        posterPath,
+        overview,
+      ];
 }
