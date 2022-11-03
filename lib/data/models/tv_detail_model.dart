@@ -1,4 +1,5 @@
 import 'package:ditonton/data/models/genre_model.dart';
+import 'package:ditonton/domain/entities/tv_detail.dart';
 import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
 
@@ -11,7 +12,7 @@ class TvDetailModel extends Equatable {
   @JsonKey(name: 'backdrop_path')
   final String? backdropPath;
   @JsonKey(name: 'created_by')
-  final List<CreatedBy>? createdBy;
+  final List<CreatedByModel>? createdBy;
   @JsonKey(name: 'episode_run_time')
   final List<int>? episodeRuntime;
   @JsonKey(name: 'first_air_date')
@@ -21,17 +22,17 @@ class TvDetailModel extends Equatable {
   @JsonKey(name: 'homepage')
   final String? homepage;
   @JsonKey(name: 'id')
-  final int? id;
+  final int id;
   @JsonKey(name: 'languages')
   final List<String>? languages;
   @JsonKey(name: 'last_air_date')
   final String? lastAirDate;
   @JsonKey(name: 'last_episode_to_air')
-  final LastEpisodeToAir lastEpisodeToAir;
+  final LastEpisodeToAirModel lastEpisodeToAir;
   @JsonKey(name: 'name')
   final String? name;
   @JsonKey(name: 'networks')
-  final List<Network>? networks;
+  final List<NetworkModel>? networks;
   @JsonKey(name: 'number_of_episodes')
   final int? numberOfEpisodes;
   @JsonKey(name: 'number_of_seasons')
@@ -49,13 +50,13 @@ class TvDetailModel extends Equatable {
   @JsonKey(name: 'poster_path')
   final String? posterPath;
   @JsonKey(name: 'production_companies')
-  final List<Network>? productionCompanies;
+  final List<NetworkModel>? productionCompanies;
   @JsonKey(name: 'production_countries')
-  final List<ProductionCountries>? productionCountries;
+  final List<ProductionCountriesModel>? productionCountries;
   @JsonKey(name: 'seasons')
-  final List<Season> seasons;
+  final List<SeasonModel>? seasons;
   @JsonKey(name: 'spoken_language')
-  final List<SpokenLanguage>? spokenLanguage;
+  final List<SpokenLanguageModel>? spokenLanguage;
   @JsonKey(name: 'status')
   final String? status;
   @JsonKey(name: 'tagline')
@@ -104,6 +105,41 @@ class TvDetailModel extends Equatable {
 
   Map<String, dynamic> toJson() => _$TvDetailModelToJson(this);
 
+  TvDetail toEntity() {
+    return TvDetail(
+      isAdult: isAdult,
+      backdropPath: backdropPath,
+      createdBy: createdBy?.map((e) => e.toEntity()).toList(),
+      episodeRuntime: episodeRuntime,
+      firstAirDate: firstAirDate,
+      genres: genres?.map((e) => e.toEntity()).toList(),
+      homepage: homepage,
+      id: id,
+      languages: languages,
+      lastAirDate: lastAirDate,
+      lastEpisodeToAir: lastEpisodeToAir.toEntity(),
+      name: name,
+      networks: networks?.map((e) => e.toEntity()).toList(),
+      numberOfEpisodes: numberOfEpisodes,
+      numberOfSeasons: numberOfSeasons,
+      originCountry: originCountry,
+      originalLanguage: originalLanguage,
+      originalName: originalName,
+      overview: overview,
+      popularity: popularity,
+      posterPath: posterPath,
+      productionCompanies: productionCompanies?.map((e) => e.toEntity()).toList(),
+      productionCountries: productionCountries?.map((e) => e.toEntity()).toList(),
+      seasons: seasons?.map((e) => e.toEntity()).toList(),
+      spokenLanguage: spokenLanguage?.map((e) => e.toEntity()).toList(),
+      status: status,
+      tagline: tagline,
+      type: type,
+      voteAverage: voteAverage,
+      voteCount: voteCount,
+    );
+  }
+
   @override
   List<Object?> get props => [
         isAdult,
@@ -140,9 +176,9 @@ class TvDetailModel extends Equatable {
 }
 
 @JsonSerializable()
-class CreatedBy extends Equatable {
+class CreatedByModel extends Equatable {
   @JsonKey(name: 'id')
-  final int? id;
+  final int id;
   @JsonKey(name: 'credit_id')
   final String? creditId;
   @JsonKey(name: 'name')
@@ -150,16 +186,25 @@ class CreatedBy extends Equatable {
   @JsonKey(name: 'profile_path')
   final String? profilePath;
 
-  CreatedBy({
+  CreatedByModel({
     required this.id,
     required this.creditId,
     required this.name,
     required this.profilePath,
   });
 
-  factory CreatedBy.fromJson(Map<String, dynamic> json) => _$CreatedByFromJson(json);
+  factory CreatedByModel.fromJson(Map<String, dynamic> json) => _$CreatedByModelFromJson(json);
 
-  Map<String, dynamic> toJson() => _$CreatedByToJson(this);
+  Map<String, dynamic> toJson() => _$CreatedByModelToJson(this);
+
+  CreatedBy toEntity() {
+    return CreatedBy(
+      id: id,
+      creditId: creditId,
+      name: name,
+      profilePath: profilePath,
+    );
+  }
 
   @override
   List<Object?> get props => [
@@ -171,13 +216,13 @@ class CreatedBy extends Equatable {
 }
 
 @JsonSerializable()
-class LastEpisodeToAir extends Equatable {
+class LastEpisodeToAirModel extends Equatable {
   @JsonKey(name: 'air_date')
   final String? airDate;
   @JsonKey(name: 'episode_number')
   final int? episodeNumber;
   @JsonKey(name: 'id')
-  final int? id;
+  final int id;
   @JsonKey(name: 'name')
   final String? name;
   @JsonKey(name: 'overview')
@@ -195,23 +240,39 @@ class LastEpisodeToAir extends Equatable {
   @JsonKey(name: 'vote_count')
   final int? voteCount;
 
-  LastEpisodeToAir({
-    this.airDate,
-    this.episodeNumber,
-    this.id,
-    this.name,
-    this.overview,
-    this.runtime,
-    this.seasonNumber,
-    this.showId,
-    this.stillPath,
-    this.voteAverage,
-    this.voteCount,
+  LastEpisodeToAirModel({
+    required this.airDate,
+    required this.episodeNumber,
+    required this.id,
+    required this.name,
+    required this.overview,
+    required this.runtime,
+    required this.seasonNumber,
+    required this.showId,
+    required this.stillPath,
+    required this.voteAverage,
+    required this.voteCount,
   });
 
-  factory LastEpisodeToAir.fromJson(Map<String, dynamic> json) => _$LastEpisodeToAirFromJson(json);
+  factory LastEpisodeToAirModel.fromJson(Map<String, dynamic> json) => _$LastEpisodeToAirModelFromJson(json);
 
-  Map<String, dynamic> toJson() => _$LastEpisodeToAirToJson(this);
+  Map<String, dynamic> toJson() => _$LastEpisodeToAirModelToJson(this);
+
+  LastEpisodeToAir toEntity() {
+    return LastEpisodeToAir(
+      airDate: airDate,
+      episodeNumber: episodeNumber,
+      id: id,
+      name: name,
+      overview: overview,
+      runtime: runtime,
+      seasonNumber: seasonNumber,
+      showId: showId,
+      stillPath: stillPath,
+      voteAverage: voteAverage,
+      voteCount: voteCount,
+    );
+  }
 
   @override
   List<Object?> get props => [
@@ -230,9 +291,9 @@ class LastEpisodeToAir extends Equatable {
 }
 
 @JsonSerializable()
-class Network extends Equatable {
+class NetworkModel extends Equatable {
   @JsonKey(name: 'id')
-  final int? id;
+  final int id;
   @JsonKey(name: 'name')
   final String? name;
   @JsonKey(name: 'logo_path')
@@ -240,16 +301,25 @@ class Network extends Equatable {
   @JsonKey(name: 'origin_country')
   final String? originCountry;
 
-  Network({
+  NetworkModel({
     required this.id,
     required this.name,
     required this.logoPath,
     required this.originCountry,
   });
 
-  factory Network.fromJson(Map<String, dynamic> json) => _$NetworkFromJson(json);
+  factory NetworkModel.fromJson(Map<String, dynamic> json) => _$NetworkModelFromJson(json);
 
-  Map<String, dynamic> toJson() => _$NetworkToJson(this);
+  Map<String, dynamic> toJson() => _$NetworkModelToJson(this);
+
+  Network toEntity() {
+    return Network(
+      id: id,
+      name: name,
+      logoPath: logoPath,
+      originCountry: originCountry,
+    );
+  }
 
   @override
   List<Object?> get props => [
@@ -261,20 +331,27 @@ class Network extends Equatable {
 }
 
 @JsonSerializable()
-class ProductionCountries extends Equatable {
+class ProductionCountriesModel extends Equatable {
   @JsonKey(name: 'iso_3166_1')
   final String? iso;
   @JsonKey(name: 'name')
   final String? name;
 
-  ProductionCountries({
+  ProductionCountriesModel({
     required this.iso,
     required this.name,
   });
 
-  factory ProductionCountries.fromJson(Map<String, dynamic> json) => _$ProductionCountriesFromJson(json);
+  factory ProductionCountriesModel.fromJson(Map<String, dynamic> json) => _$ProductionCountriesModelFromJson(json);
 
-  Map<String, dynamic> toJson() => _$ProductionCountriesToJson(this);
+  Map<String, dynamic> toJson() => _$ProductionCountriesModelToJson(this);
+
+  ProductionCountries toEntity() {
+    return ProductionCountries(
+      iso: iso,
+      name: name,
+    );
+  }
 
   @override
   List<Object?> get props => [
@@ -284,13 +361,13 @@ class ProductionCountries extends Equatable {
 }
 
 @JsonSerializable()
-class Season extends Equatable {
+class SeasonModel extends Equatable {
   @JsonKey(name: 'air_date')
   final String? airDate;
   @JsonKey(name: 'episode_count')
   final int? episodeCount;
   @JsonKey(name: 'id')
-  final int? id;
+  final int id;
   @JsonKey(name: 'name')
   final String? name;
   @JsonKey(name: 'overview')
@@ -300,7 +377,7 @@ class Season extends Equatable {
   @JsonKey(name: 'season_number')
   final int? seasonNumber;
 
-  Season({
+  SeasonModel({
     required this.airDate,
     required this.episodeCount,
     required this.id,
@@ -310,9 +387,21 @@ class Season extends Equatable {
     required this.seasonNumber,
   });
 
-  factory Season.fromJson(Map<String, dynamic> json) => _$SeasonFromJson(json);
+  factory SeasonModel.fromJson(Map<String, dynamic> json) => _$SeasonModelFromJson(json);
 
-  Map<String, dynamic> toJson() => _$SeasonToJson(this);
+  Map<String, dynamic> toJson() => _$SeasonModelToJson(this);
+
+  Season toEntity() {
+    return Season(
+      airDate: airDate,
+      episodeCount: episodeCount,
+      id: id,
+      name: name,
+      overview: overview,
+      posterPath: posterPath,
+      seasonNumber: seasonNumber,
+    );
+  }
 
   @override
   List<Object?> get props => [
@@ -327,7 +416,7 @@ class Season extends Equatable {
 }
 
 @JsonSerializable()
-class SpokenLanguage extends Equatable {
+class SpokenLanguageModel extends Equatable {
   @JsonKey(name: 'english_name')
   final String? englishName;
   @JsonKey(name: 'iso_639_1')
@@ -335,15 +424,23 @@ class SpokenLanguage extends Equatable {
   @JsonKey(name: 'name')
   final String? name;
 
-  SpokenLanguage({
+  SpokenLanguageModel({
     required this.englishName,
     required this.iso,
     required this.name,
   });
 
-  factory SpokenLanguage.fromJson(Map<String, dynamic> json) => _$SpokenLanguageFromJson(json);
+  factory SpokenLanguageModel.fromJson(Map<String, dynamic> json) => _$SpokenLanguageModelFromJson(json);
 
-  Map<String, dynamic> toJson() => _$SpokenLanguageToJson(this);
+  Map<String, dynamic> toJson() => _$SpokenLanguageModelToJson(this);
+
+  SpokenLanguage toEntity() {
+    return SpokenLanguage(
+      englishName: englishName,
+      iso: iso,
+      name: name,
+    );
+  }
 
   @override
   List<Object?> get props => [

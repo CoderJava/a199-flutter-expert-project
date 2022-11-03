@@ -12,7 +12,7 @@ class TvModel extends Equatable {
   @JsonKey(name: 'genre_ids')
   final List<int>? genreIds;
   @JsonKey(name: 'id')
-  final int? id;
+  final int id;
   @JsonKey(name: 'name')
   final String? name;
   @JsonKey(name: 'original_country')
