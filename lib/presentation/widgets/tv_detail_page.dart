@@ -154,6 +154,12 @@ class DetailContentTv extends StatelessWidget {
                             Text(
                               _showDuration(tv.lastEpisodeToAir.runtime ?? 0),
                             ),
+                            Text(
+                              _showEpisode(tv.numberOfEpisodes ?? -1),
+                            ),
+                            Text(
+                              _showSeason(tv.numberOfSeasons ?? -1),
+                            ),
                             Row(
                               children: [
                                 RatingBarIndicator(
@@ -289,5 +295,15 @@ class DetailContentTv extends StatelessWidget {
     } else {
       return '${minutes}m';
     }
+  }
+
+  String _showEpisode(int episode) {
+    final text = episode == -1 ? '-' : '$episode';
+    return 'Episode: $text';
+  }
+
+  String _showSeason(int season) {
+    final text = season == -1 ? '-' : '$season';
+    return 'Season: $text';
   }
 }
