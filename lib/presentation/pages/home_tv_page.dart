@@ -6,8 +6,8 @@ import 'package:ditonton/presentation/pages/now_playing_tv_page.dart';
 import 'package:ditonton/presentation/pages/popular_tv_page.dart';
 import 'package:ditonton/presentation/pages/search_tv_page.dart';
 import 'package:ditonton/presentation/pages/top_rated_tv_page.dart';
-import 'package:ditonton/presentation/provider/tv_list_notifier.dart';
 import 'package:ditonton/presentation/pages/tv_detail_page.dart';
+import 'package:ditonton/presentation/provider/tv_list_notifier.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -169,15 +169,17 @@ class TvList extends StatelessWidget {
                 borderRadius: BorderRadius.all(
                   Radius.circular(16),
                 ),
-                child: CachedNetworkImage(
-                  imageUrl: '$BASE_IMAGE_URL${tv.posterPath}',
-                  placeholder: (context, url) {
-                    return Center(
-                      child: CircularProgressIndicator(),
-                    );
-                  },
-                  errorWidget: (context, url, error) => Icon(Icons.error),
-                ),
+                child: (tv.posterPath ?? '').isEmpty
+                    ? Icon(Icons.error)
+                    : CachedNetworkImage(
+                        imageUrl: '$BASE_IMAGE_URL${tv.posterPath}',
+                        placeholder: (context, url) {
+                          return Center(
+                            child: CircularProgressIndicator(),
+                          );
+                        },
+                        errorWidget: (context, url, error) => Icon(Icons.error),
+                      ),
               ),
             ),
           );

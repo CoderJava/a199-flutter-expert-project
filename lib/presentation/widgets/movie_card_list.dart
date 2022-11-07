@@ -56,14 +56,20 @@ class MovieCard extends StatelessWidget {
                 bottom: 16,
               ),
               child: ClipRRect(
-                child: CachedNetworkImage(
-                  imageUrl: '$BASE_IMAGE_URL${movie.posterPath}',
-                  width: 80,
-                  placeholder: (context, url) => Center(
-                    child: CircularProgressIndicator(),
-                  ),
-                  errorWidget: (context, url, error) => Icon(Icons.error),
-                ),
+                child: (movie.posterPath ?? '').isEmpty
+                    ? SizedBox(
+                        width: 80,
+                        height: 48,
+                        child: Icon(Icons.error),
+                      )
+                    : CachedNetworkImage(
+                        imageUrl: '$BASE_IMAGE_URL${movie.posterPath}',
+                        width: 80,
+                        placeholder: (context, url) => Center(
+                          child: CircularProgressIndicator(),
+                        ),
+                        errorWidget: (context, url, error) => Icon(Icons.error),
+                      ),
                 borderRadius: BorderRadius.all(Radius.circular(8)),
               ),
             ),

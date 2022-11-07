@@ -80,16 +80,18 @@ class DetailContentTv extends StatelessWidget {
     final screenWidth = MediaQuery.of(context).size.width;
     return Stack(
       children: [
-        CachedNetworkImage(
-          imageUrl: 'https://image.tmdb.org/t/p/w500${tv.posterPath}',
-          width: screenWidth,
-          placeholder: (context, url) {
-            return Center(
-              child: CircularProgressIndicator(),
-            );
-          },
-          errorWidget: (context, url, error) => Icon(Icons.error),
-        ),
+        (tv.posterPath ?? '').isEmpty
+            ? Icon(Icons.error)
+            : CachedNetworkImage(
+                imageUrl: 'https://image.tmdb.org/t/p/w500${tv.posterPath}',
+                width: screenWidth,
+                placeholder: (context, url) {
+                  return Center(
+                    child: CircularProgressIndicator(),
+                  );
+                },
+                errorWidget: (context, url, error) => Icon(Icons.error),
+              ),
         Container(
           margin: const EdgeInsets.only(top: 48 + 8),
           child: DraggableScrollableSheet(
@@ -152,7 +154,7 @@ class DetailContentTv extends StatelessWidget {
                               _showGenres(tv.genres ?? []),
                             ),
                             Text(
-                              _showDuration(tv.lastEpisodeToAir.runtime ?? 0),
+                              _showDuration(tv.lastEpisodeToAir?.runtime ?? 0),
                             ),
                             Text(
                               _showEpisode(tv.numberOfEpisodes ?? -1),
@@ -216,13 +218,15 @@ class DetailContentTv extends StatelessWidget {
                                               borderRadius: BorderRadius.all(
                                                 Radius.circular(8),
                                               ),
-                                              child: CachedNetworkImage(
-                                                imageUrl: 'https://image.tmdb.org/t/p/w500${movie.posterPath}',
-                                                placeholder: (context, url) => Center(
-                                                  child: CircularProgressIndicator(),
-                                                ),
-                                                errorWidget: (context, url, error) => Icon(Icons.error),
-                                              ),
+                                              child: (movie.posterPath ?? '').isEmpty
+                                                  ? Icon(Icons.error)
+                                                  : CachedNetworkImage(
+                                                      imageUrl: 'https://image.tmdb.org/t/p/w500${movie.posterPath}',
+                                                      placeholder: (context, url) => Center(
+                                                        child: CircularProgressIndicator(),
+                                                      ),
+                                                      errorWidget: (context, url, error) => Icon(Icons.error),
+                                                    ),
                                             ),
                                           ),
                                         );

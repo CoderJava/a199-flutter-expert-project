@@ -28,7 +28,7 @@ class TvDetailModel extends Equatable {
   @JsonKey(name: 'last_air_date')
   final String? lastAirDate;
   @JsonKey(name: 'last_episode_to_air')
-  final LastEpisodeToAirModel lastEpisodeToAir;
+  final LastEpisodeToAirModel? lastEpisodeToAir;
   @JsonKey(name: 'name')
   final String? name;
   @JsonKey(name: 'networks')
@@ -117,7 +117,7 @@ class TvDetailModel extends Equatable {
       id: id,
       languages: languages,
       lastAirDate: lastAirDate,
-      lastEpisodeToAir: lastEpisodeToAir.toEntity(),
+      lastEpisodeToAir: lastEpisodeToAir?.toEntity(),
       name: name,
       networks: networks?.map((e) => e.toEntity()).toList(),
       numberOfEpisodes: numberOfEpisodes,

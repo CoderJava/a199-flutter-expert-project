@@ -15,7 +15,9 @@ class SearchMoviePage extends StatefulWidget {
 class _SearchMoviePageState extends State<SearchMoviePage> {
   @override
   void initState() {
-    Provider.of<MovieSearchNotifier>(context, listen: false).searchResult.clear();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      Provider.of<MovieSearchNotifier>(context, listen: false).resetMovieSearch();
+    });
     super.initState();
   }
 
@@ -32,8 +34,7 @@ class _SearchMoviePageState extends State<SearchMoviePage> {
           children: [
             TextField(
               onSubmitted: (query) {
-                Provider.of<MovieSearchNotifier>(context, listen: false)
-                    .fetchMovieSearch(query);
+                Provider.of<MovieSearchNotifier>(context, listen: false).fetchMovieSearch(query);
               },
               decoration: InputDecoration(
                 hintText: 'Search title',
@@ -55,16 +56,22 @@ class _SearchMoviePageState extends State<SearchMoviePage> {
                   );
                 } else if (data.state == RequestState.Loaded) {
                   final result = data.searchResult;
-                  return Expanded(
-                    child: ListView.builder(
-                      padding: const EdgeInsets.all(8),
-                      itemBuilder: (context, index) {
-                        final movie = data.searchResult[index];
-                        return MovieCard(movie);
-                      },
-                      itemCount: result.length,
-                    ),
-                  );
+                  return result.isEmpty
+                      ? Expanded(
+                          child: Center(
+                            child: Text('Data not found'),
+                          ),
+                        )
+                      : Expanded(
+                          child: ListView.builder(
+                            padding: const EdgeInsets.all(8),
+                            itemBuilder: (context, index) {
+                              final movie = data.searchResult[index];
+                              return MovieCard(movie);
+                            },
+                            itemCount: result.length,
+                          ),
+                        );
                 } else {
                   return Expanded(
                     child: Container(),

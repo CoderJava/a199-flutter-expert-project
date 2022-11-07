@@ -17,7 +17,9 @@ class SearchTvPage extends StatefulWidget {
 class _SearchTvPageState extends State<SearchTvPage> {
   @override
   void initState() {
-    Provider.of<TvSearchNotifier>(context, listen: false).searchResult.clear();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      Provider.of<TvSearchNotifier>(context, listen: false).resetTvSearch();
+    });
     super.initState();
   }
 
@@ -57,15 +59,21 @@ class _SearchTvPageState extends State<SearchTvPage> {
                   );
                 } else if (state == RequestState.Loaded) {
                   final result = data.searchResult;
-                  return Expanded(
-                    child: ListView.builder(
-                      itemBuilder: (context, index) {
-                        final tv = data.searchResult[index];
-                        return TvCard(tv: tv);
-                      },
-                      itemCount: result.length,
-                    ),
-                  );
+                  return result.isEmpty
+                      ? Expanded(
+                          child: Center(
+                            child: Text('Data not found'),
+                          ),
+                        )
+                      : Expanded(
+                          child: ListView.builder(
+                            itemBuilder: (context, index) {
+                              final tv = data.searchResult[index];
+                              return TvCard(tv: tv);
+                            },
+                            itemCount: result.length,
+                          ),
+                        );
                 } else {
                   return Expanded(
                     child: Container(),

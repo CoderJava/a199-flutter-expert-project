@@ -29,6 +29,7 @@ class TvCard extends StatelessWidget {
           children: [
             Card(
               child: Container(
+                width: double.infinity,
                 margin: const EdgeInsets.only(
                   left: 16 + 80 + 16,
                   bottom: 8,
@@ -45,7 +46,7 @@ class TvCard extends StatelessWidget {
                     ),
                     SizedBox(height: 16),
                     Text(
-                      tv.overview ?? '-',
+                      (tv.overview ?? '').isEmpty ? 'Overview not available' : tv.overview!,
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
                     ),
@@ -59,16 +60,22 @@ class TvCard extends StatelessWidget {
                 bottom: 16,
               ),
               child: ClipRRect(
-                child: CachedNetworkImage(
-                  imageUrl: '$BASE_IMAGE_URL${tv.posterPath}',
-                  width: 80,
-                  placeholder: (context, url) {
-                    return Center(
-                      child: CircularProgressIndicator(),
-                    );
-                  },
-                  errorWidget: (context, url, error) => Icon(Icons.error),
-                ),
+                child: (tv.posterPath ?? '').isEmpty
+                    ? SizedBox(
+                        width: 80,
+                        height: 48,
+                        child: Icon(Icons.error),
+                      )
+                    : CachedNetworkImage(
+                        imageUrl: '$BASE_IMAGE_URL${tv.posterPath}',
+                        width: 80,
+                        placeholder: (context, url) {
+                          return Center(
+                            child: CircularProgressIndicator(),
+                          );
+                        },
+                        errorWidget: (context, url, error) => Icon(Icons.error),
+                      ),
                 borderRadius: BorderRadius.all(
                   Radius.circular(8),
                 ),
