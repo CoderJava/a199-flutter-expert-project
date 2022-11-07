@@ -90,4 +90,19 @@ void main() {
       },
     );
   });
+
+  group('reset tv search', () {
+    test(
+      'should reset state to empty state',
+      () async {
+        // act
+        provider.resetTvSearch();
+
+        // assert
+        expect(provider.state, RequestState.Empty);
+        expect(provider.message, '');
+        expect(provider.searchResult, []);
+      },
+    );
+  });
 }

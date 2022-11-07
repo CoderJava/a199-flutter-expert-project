@@ -35,4 +35,12 @@ class MovieSearchNotifier extends ChangeNotifier {
       },
     );
   }
+
+  void resetMovieSearch() async {
+    _message = '';
+    _state = RequestState.Empty;
+    _searchResult.clear();
+    notifyListeners();
+  }
+
 }

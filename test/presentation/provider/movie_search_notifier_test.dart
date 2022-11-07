@@ -80,4 +80,19 @@ void main() {
       expect(listenerCallCount, 2);
     });
   });
+
+  group('reset movie search', () {
+    test(
+      'should reset state to empty state',
+      () async {
+        // act
+        provider.resetMovieSearch();
+
+        // assert
+        expect(provider.state, RequestState.Empty);
+        expect(provider.message, '');
+        expect(provider.searchResult, []);
+      },
+    );
+  });
 }
