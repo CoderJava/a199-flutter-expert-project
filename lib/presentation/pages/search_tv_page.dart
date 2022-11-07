@@ -62,7 +62,12 @@ class _SearchTvPageState extends State<SearchTvPage> {
                   return result.isEmpty
                       ? Expanded(
                           child: Center(
-                            child: Text('Data not found'),
+                            child: Text(
+                              'Data not found',
+                              key: Key(
+                                'data_not_found',
+                              ),
+                            ),
                           ),
                         )
                       : Expanded(
@@ -76,7 +81,11 @@ class _SearchTvPageState extends State<SearchTvPage> {
                         );
                 } else {
                   return Expanded(
-                    child: Container(),
+                    child: Container(
+                      key: Key(
+                        'empty_container',
+                      ),
+                    ),
                   );
                 }
               },

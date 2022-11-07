@@ -59,7 +59,10 @@ class _SearchMoviePageState extends State<SearchMoviePage> {
                   return result.isEmpty
                       ? Expanded(
                           child: Center(
-                            child: Text('Data not found'),
+                            child: Text(
+                              'Data not found',
+                              key: Key('data_not_found'),
+                            ),
                           ),
                         )
                       : Expanded(
@@ -74,7 +77,11 @@ class _SearchMoviePageState extends State<SearchMoviePage> {
                         );
                 } else {
                   return Expanded(
-                    child: Container(),
+                    child: Container(
+                      key: Key(
+                        'empty_container',
+                      ),
+                    ),
                   );
                 }
               },
