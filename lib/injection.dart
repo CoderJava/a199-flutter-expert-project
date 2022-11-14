@@ -2,11 +2,42 @@ import 'package:core/core.dart';
 import 'package:get_it/get_it.dart';
 import 'package:http/http.dart' as http;
 import 'package:movie/movie.dart';
+import 'package:tv/presentation/bloc/tv_bloc.dart';
 import 'package:tv/tv.dart';
 
 final locator = GetIt.instance;
 
 void init() {
+  // bloc
+  locator.registerFactory(
+    () => MovieBloc(
+      getNowPlayingMovies: locator(),
+      getPopularMovies: locator(),
+      getTopRatedMovies: locator(),
+      getMovieDetail: locator(),
+      getMovieRecommendations: locator(),
+      getWatchlistMovies: locator(),
+      saveWatchlistMovie: locator(),
+      removeWatchlistMovie: locator(),
+      searchMovies: locator(),
+      getWatchListStatusMovie: locator(),
+    ),
+  );
+  locator.registerFactory(
+    () => TvBloc(
+      getNowPlayingTv: locator(),
+      getPopularTv: locator(),
+      getTopRatedTv: locator(),
+      getTvDetail: locator(),
+      getTvRecommendations: locator(),
+      getWatchlistTv: locator(),
+      saveWatchlistTv: locator(),
+      removeWatchlistTv: locator(),
+      searchTv: locator(),
+      getWatchListStatusTv: locator(),
+    ),
+  );
+
   // provider
   locator.registerFactory(
     () => MovieListNotifier(
