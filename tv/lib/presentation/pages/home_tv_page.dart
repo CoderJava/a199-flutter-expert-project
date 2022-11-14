@@ -1,9 +1,10 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:core/core.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:injector/injector.dart' as di;
 import 'package:tv/domain/entities/tv.dart';
-import 'package:tv/presentation/provider/tv_list_notifier.dart';
+import 'package:tv/presentation/bloc/tv_bloc.dart';
 
 class HomeTvPage extends StatefulWidget {
   const HomeTvPage({Key? key}) : super(key: key);
@@ -13,96 +14,98 @@ class HomeTvPage extends StatefulWidget {
 }
 
 class _HomeTvPageState extends State<HomeTvPage> {
+  final tvBloc = di.locator<TvBloc>();
+
   @override
   void initState() {
     super.initState();
-    Future.microtask(() => Provider.of<TvListNotifier>(context, listen: false)
-      ..fetchNowPlayingTv()
-      ..fetchPopularTv()
-      ..fetchTopRatedTv());
+    tvBloc.add(LoadDataHomeTvEvent());
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('TV'),
-        actions: [
-          IconButton(
-            onPressed: () {
-              Navigator.pushNamed(context, searchTvRoute);
-            },
-            icon: const Icon(Icons.search),
-          ),
-        ],
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(8),
-        child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              _buildSubHeading(
-                title: 'Now Playing',
-                onTap: () {
-                  Navigator.pushNamed(context, nowPlayingTvRoute);
-                },
-              ),
-              Consumer<TvListNotifier>(
-                builder: (context, data, child) {
-                  final state = data.nowPlayingState;
-                  if (state == RequestState.loading) {
-                    return const Center(
-                      child: CircularProgressIndicator(),
-                    );
-                  } else if (state == RequestState.loaded) {
-                    return TvList(listTv: data.nowPlayingtv);
-                  } else {
-                    return const Text('Failed');
-                  }
-                },
-              ),
-              _buildSubHeading(
-                title: 'Popular',
-                onTap: () {
-                  Navigator.pushNamed(context, popularTvRoute);
-                },
-              ),
-              Consumer<TvListNotifier>(
-                builder: (context, data, child) {
-                  final state = data.popularTvState;
-                  if (state == RequestState.loading) {
-                    return const Center(
-                      child: CircularProgressIndicator(),
-                    );
-                  } else if (state == RequestState.loaded) {
-                    return TvList(listTv: data.popularTv);
-                  } else {
-                    return const Text('Failed');
-                  }
-                },
-              ),
-              _buildSubHeading(
-                title: 'Top Rated',
-                onTap: () {
-                  Navigator.pushNamed(context, topRatedTvRoute);
-                },
-              ),
-              Consumer<TvListNotifier>(
-                builder: (context, data, child) {
-                  final state = data.topRatedTvState;
-                  if (state == RequestState.loading) {
-                    return const Center(
-                      child: CircularProgressIndicator(),
-                    );
-                  } else if (state == RequestState.loaded) {
-                    return TvList(listTv: data.topRatedTv);
-                  } else {
-                    return const Text('Failed');
-                  }
-                },
-              ),
-            ],
+    return BlocProvider<TvBloc>(
+      create: (_) => tvBloc,
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text('TV'),
+          actions: [
+            IconButton(
+              onPressed: () {
+                Navigator.pushNamed(context, searchTvRoute);
+              },
+              icon: const Icon(Icons.search),
+            ),
+          ],
+        ),
+        body: Padding(
+          padding: const EdgeInsets.all(8),
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                _buildSubHeading(
+                  title: 'Now Playing',
+                  onTap: () {
+                    Navigator.pushNamed(context, nowPlayingTvRoute);
+                  },
+                ),
+                BlocBuilder<TvBloc, TvState>(
+                  builder: (context, state) {
+                    if (state is LoadingTvState) {
+                      return const Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    } else if (state is SuccessLoadDataHomeTvState) {
+                      return TvList(listTv: state.nowPlayingTv);
+                    } else if (state is FailureTvState) {
+                      return const Text('Failed');
+                    }
+                    return Container();
+                  },
+                ),
+                _buildSubHeading(
+                  title: 'Popular',
+                  onTap: () {
+                    Navigator.pushNamed(context, popularTvRoute);
+                  },
+                ),
+                BlocBuilder<TvBloc, TvState>(
+                  builder: (context, state) {
+                    if (state is LoadingTvState) {
+                      return const Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    } else if (state is SuccessLoadDataHomeTvState) {
+                      return TvList(listTv: state.popularTv);
+                    } else if (state is FailureTvState) {
+                      return const Text('Failed');
+                    }
+                    return Container();
+                  },
+                ),
+                _buildSubHeading(
+                  title: 'Top Rated',
+                  onTap: () {
+                    Navigator.pushNamed(context, topRatedTvRoute);
+                  },
+                ),
+                BlocBuilder<TvBloc, TvState>(
+                  builder: (context, state) {
+                    if (state is LoadingTvState) {
+                      return const Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    } else if (state is SuccessLoadDataHomeTvState) {
+                      return TvList(listTv: state.topRatedTv);
+                    } else if (state is FailureTvState) {
+                      return const Text('Failed');
+                    }
+                    return Container();
+                  },
+                ),
+              ],
+            ),
           ),
         ),
       ),

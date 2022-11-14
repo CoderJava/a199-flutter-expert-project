@@ -36,3 +36,4 @@ export 'presentation/provider/tv_list_notifier.dart';
 export 'presentation/provider/tv_search_notifier.dart';
 export 'presentation/provider/watchlist_tv_notifier.dart';
 export 'presentation/widgets/tv_card_list.dart';
+export 'presentation/bloc/tv_bloc.dart';

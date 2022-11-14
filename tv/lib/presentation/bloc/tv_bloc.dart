@@ -31,6 +31,9 @@ class TvBloc extends Bloc<TvEvent, TvState> {
   final SearchTv searchTv;
   final GetWatchlistTv getWatchlistTv;
 
+  static const watchlistAddSuccessMessage = 'Added to Watchlist';
+  static const watchlistRemoveSuccessMessage = 'Removed from Watchlist';
+
   TvBloc({
     required this.getNowPlayingTv,
     required this.getPopularTv,
@@ -54,6 +57,12 @@ class TvBloc extends Bloc<TvEvent, TvState> {
     on<LoadDataDetailTvEvent>(_onLoadDataDetailTvEvent);
 
     on<SearchTvEvent>(_onSearchTvEvent);
+
+    on<LoadDataWatchlistTvEvent>(_onLoadDataWatchlistTvEvent);
+
+    on<AddWatchlistTvEvent>(_onAddWatchlistTvEvent);
+
+    on<RemoveWatchlistTvEvent>(_onRemoveWatchlistTvEvent);
   }
 
   FutureOr<void> _onLoadDataHomeTvEvent(
@@ -176,6 +185,8 @@ class TvBloc extends Bloc<TvEvent, TvState> {
       movieDetail = resultFoldDetailTv;
     }
 
+    final resultWatchlistStatusTv = await getWatchListStatusTv.execute(id);
+
     final resultTvRecommendations = await getTvRecommendations.execute(id);
     final resultFoldTvRecommendations = resultTvRecommendations.fold(
       (failure) => failure,
@@ -192,8 +203,9 @@ class TvBloc extends Bloc<TvEvent, TvState> {
 
     emit(
       SuccessLoadDataDetailTvState(
-        movieDetail: movieDetail,
-        movieRecommendations: movieRecommendations,
+        tvDetail: movieDetail,
+        tvRecommendations: movieRecommendations,
+        isAddedToWatchlist: resultWatchlistStatusTv,
       ),
     );
   }
@@ -205,6 +217,55 @@ class TvBloc extends Bloc<TvEvent, TvState> {
       resultSearchTv.fold(
         (failure) => FailureTvState(message: failure.message),
         (response) => SuccessSearchTvState(searchResult: response),
+      ),
+    );
+  }
+
+  FutureOr<void> _onLoadDataWatchlistTvEvent(
+    LoadDataWatchlistTvEvent event,
+    Emitter<TvState> emit,
+  ) async {
+    final resultWatchlistTv = await getWatchlistTv.execute();
+    emit(
+      resultWatchlistTv.fold(
+        (failure) => FailureTvState(message: failure.message),
+        (response) => SuccessLoadDataWatchlistTvState(watchlistTv: response),
+      ),
+    );
+  }
+
+  FutureOr<void> _onAddWatchlistTvEvent(
+    AddWatchlistTvEvent event,
+    Emitter<TvState> emit,
+  ) async {
+    final result = await saveWatchlistTv.execute(event.tv);
+    final message = result.fold(
+      (failure) => failure.message,
+      (response) => response,
+    );
+    final resultWatchlistTv = await getWatchListStatusTv.execute(event.tv.id);
+    emit(
+      SuccessUpdateWatchlistStatusTvState(
+        message: message,
+        isAddedToWatchlist: resultWatchlistTv,
+      ),
+    );
+  }
+
+  FutureOr<void> _onRemoveWatchlistTvEvent(
+    RemoveWatchlistTvEvent event,
+    Emitter<TvState> emit,
+  ) async {
+    final result = await removeWatchlistTv.execute(event.tv);
+    final message = result.fold(
+      (failure) => failure.message,
+      (response) => response,
+    );
+    final resultWatchlistTv = await getWatchListStatusTv.execute(event.tv.id);
+    emit(
+      SuccessUpdateWatchlistStatusTvState(
+        message: message,
+        isAddedToWatchlist: resultWatchlistTv,
       ),
     );
   }

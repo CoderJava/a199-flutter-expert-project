@@ -55,3 +55,33 @@ class SearchTvEvent extends TvEvent {
     return 'SearchTvEvent{query: $query}';
   }
 }
+
+class LoadDataWatchlistTvEvent extends TvEvent {
+
+  @override
+  String toString() {
+    return 'LoadDataWatchlistTvEvent{}';
+  }
+}
+
+class AddWatchlistTvEvent extends TvEvent {
+  final TvDetail tv;
+
+  AddWatchlistTvEvent({required this.tv});
+
+  @override
+  String toString() {
+    return 'AddWatchlistTvEvent{tv: $tv}';
+  }
+}
+
+class RemoveWatchlistTvEvent extends TvEvent {
+  final TvDetail tv;
+
+  RemoveWatchlistTvEvent({required this.tv});
+
+  @override
+  String toString() {
+    return 'RemoveWatchlistTvEvent{tv: $tv}';
+  }
+}

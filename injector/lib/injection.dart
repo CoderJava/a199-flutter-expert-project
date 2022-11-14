@@ -2,7 +2,6 @@ import 'package:core/core.dart';
 import 'package:get_it/get_it.dart';
 import 'package:http/http.dart' as http;
 import 'package:movie/movie.dart';
-import 'package:tv/presentation/bloc/tv_bloc.dart';
 import 'package:tv/tv.dart';
 
 final locator = GetIt.instance;

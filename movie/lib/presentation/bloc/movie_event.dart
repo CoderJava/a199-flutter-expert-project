@@ -55,3 +55,33 @@ class SearchMovieEvent extends MovieEvent {
     return 'SearchMovieEvent{query: $query}';
   }
 }
+
+class LoadDataWatchlistMovieEvent extends MovieEvent {
+
+  @override
+  String toString() {
+    return 'LoadDataWatchlistMovieEvent{}';
+  }
+}
+
+class AddWatchlistMovieEvent extends MovieEvent {
+  final MovieDetail movie;
+
+  AddWatchlistMovieEvent({required this.movie});
+
+  @override
+  String toString() {
+    return 'AddWatchlistMovieEvent{movie: $movie}';
+  }
+}
+
+class RemoveWatchlistMovieEvent extends MovieEvent {
+  final MovieDetail movie;
+
+  RemoveWatchlistMovieEvent({required this.movie});
+
+  @override
+  String toString() {
+    return 'RemoveWatchlistMovieEvent{movie: $movie}';
+  }
+}

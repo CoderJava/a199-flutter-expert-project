@@ -3,7 +3,6 @@ part of 'movie_bloc.dart';
 abstract class MovieState {}
 
 class InitialMovieState extends MovieState {
-
   @override
   String toString() {
     return 'InitialMovieState{}';
@@ -11,7 +10,6 @@ class InitialMovieState extends MovieState {
 }
 
 class LoadingMovieState extends MovieState {
-
   @override
   String toString() {
     return 'LoadingMovieState{}';
@@ -83,15 +81,18 @@ class SuccessLoadDataTopRatedMovieState extends MovieState {
 class SuccessLoadDataDetailMovieState extends MovieState {
   final MovieDetail? movieDetail;
   final List<Movie> movieRecommendations;
+  final bool isAddedToWatchlist;
 
   SuccessLoadDataDetailMovieState({
     required this.movieDetail,
     required this.movieRecommendations,
+    required this.isAddedToWatchlist,
   });
 
   @override
   String toString() {
-    return 'SuccessLoadDataDetailMovieState{movieDetail: $movieDetail, movieRecommendations: $movieRecommendations}';
+    return 'SuccessLoadDataDetailMovieState{movieDetail: $movieDetail, movieRecommendations: $movieRecommendations, '
+        'isAddedToWatchlist: $isAddedToWatchlist}';
   }
 }
 
@@ -103,5 +104,31 @@ class SuccessSearchMovieState extends MovieState {
   @override
   String toString() {
     return 'SuccessSearchMovieState{searchResult: $searchResult}';
+  }
+}
+
+class SuccessLoadDataWatchlistMovieState extends MovieState {
+  final List<Movie> watchlistMovies;
+
+  SuccessLoadDataWatchlistMovieState({required this.watchlistMovies});
+
+  @override
+  String toString() {
+    return 'SuccessLoadDataWatchlistMovieState{watchlistMovies: $watchlistMovies}';
+  }
+}
+
+class SuccessUpdateWatchlistStatusMovieState extends MovieState {
+  final String message;
+  final bool isAddedToWatchlist;
+
+  SuccessUpdateWatchlistStatusMovieState({
+    required this.message,
+    required this.isAddedToWatchlist,
+  });
+
+  @override
+  String toString() {
+    return 'SuccessUpdateWatchlistStatusMovieState{message: $message, isAddedToWatchlist: $isAddedToWatchlist}';
   }
 }

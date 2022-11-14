@@ -125,8 +125,8 @@ void main() {
 
   group('SuccessLoadDataDetailTvState', () {
     final tState = SuccessLoadDataDetailTvState(
-      movieDetail: testTvDetail,
-      movieRecommendations: testTvList,
+      tvDetail: testTvDetail,
+      tvRecommendations: testTvList,
     );
 
     test(
@@ -138,8 +138,8 @@ void main() {
         // assert
         expect(
           result,
-          'SuccessLoadDataDetailTvState{movieDetail: ${tState.movieDetail}, '
-              'movieRecommendations: ${tState.movieRecommendations}}',
+          'SuccessLoadDataDetailTvState{movieDetail: ${tState.tvDetail}, '
+              'movieRecommendations: ${tState.tvRecommendations}}',
         );
       },
     );

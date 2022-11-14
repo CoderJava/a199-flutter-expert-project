@@ -31,6 +31,9 @@ class MovieBloc extends Bloc<MovieEvent, MovieState> {
   final SearchMovies searchMovies;
   final GetWatchlistMovies getWatchlistMovies;
 
+  static const watchlistAddSuccessMessage = 'Added to Watchlist';
+  static const watchlistRemoveSuccessMessage = 'Removed from Watchlist';
+
   MovieBloc({
     required this.getNowPlayingMovies,
     required this.getPopularMovies,
@@ -54,6 +57,12 @@ class MovieBloc extends Bloc<MovieEvent, MovieState> {
     on<LoadDataDetailMovieEvent>(_onLoadDataDetailMovieEvent);
 
     on<SearchMovieEvent>(_onSearchMovieEvent);
+
+    on<LoadDataWatchlistMovieEvent>(_onLoadDataWatchlistMovieEvent);
+
+    on<AddWatchlistMovieEvent>(_onAddWatchlistMovieEvent);
+
+    on<RemoveWatchlistMovieEvent>(_onRemoveWatchlistMovieEvent);
   }
 
   FutureOr<void> _onLoadDataHomeMovieEvent(
@@ -176,6 +185,8 @@ class MovieBloc extends Bloc<MovieEvent, MovieState> {
       movieDetail = resultFoldDetailMovie;
     }
 
+    final resultWatchlistStatusMovie = await getWatchListStatusMovie.execute(id);
+
     final resultMovieRecommendations = await getMovieRecommendations.execute(id);
     final resultFoldMovieRecommendations = resultMovieRecommendations.fold(
       (failure) => failure,
@@ -194,6 +205,7 @@ class MovieBloc extends Bloc<MovieEvent, MovieState> {
       SuccessLoadDataDetailMovieState(
         movieDetail: movieDetail,
         movieRecommendations: movieRecommendations,
+        isAddedToWatchlist: resultWatchlistStatusMovie,
       ),
     );
   }
@@ -205,6 +217,49 @@ class MovieBloc extends Bloc<MovieEvent, MovieState> {
       resultSearchMovies.fold(
         (failure) => FailureMovieState(message: failure.message),
         (response) => SuccessSearchMovieState(searchResult: response),
+      ),
+    );
+  }
+
+  FutureOr<void> _onLoadDataWatchlistMovieEvent(
+    LoadDataWatchlistMovieEvent event,
+    Emitter<MovieState> emit,
+  ) async {
+    final resultWatchlistMovies = await getWatchlistMovies.execute();
+    emit(
+      resultWatchlistMovies.fold(
+        (failure) => FailureMovieState(message: failure.message),
+        (response) => SuccessLoadDataWatchlistMovieState(watchlistMovies: response),
+      ),
+    );
+  }
+
+  FutureOr<void> _onAddWatchlistMovieEvent(AddWatchlistMovieEvent event, Emitter<MovieState> emit) async {
+    final result = await saveWatchlistMovie.execute(event.movie);
+    final message = result.fold(
+      (failure) => failure.message,
+      (response) => response,
+    );
+    final resultWatchlistMovies = await getWatchListStatusMovie.execute(event.movie.id);
+    emit(
+      SuccessUpdateWatchlistStatusMovieState(
+        message: message,
+        isAddedToWatchlist: resultWatchlistMovies,
+      ),
+    );
+  }
+
+  FutureOr<void> _onRemoveWatchlistMovieEvent(RemoveWatchlistMovieEvent event, Emitter<MovieState> emit) async {
+    final result = await removeWatchlistMovie.execute(event.movie);
+    final message = result.fold(
+      (failure) => failure.message,
+      (response) => response,
+    );
+    final resultWatchlistMovies = await getWatchListStatusMovie.execute(event.movie.id);
+    emit(
+      SuccessUpdateWatchlistStatusMovieState(
+        message: message,
+        isAddedToWatchlist: resultWatchlistMovies,
       ),
     );
   }

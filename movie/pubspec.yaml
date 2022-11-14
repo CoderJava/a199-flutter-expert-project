@@ -12,6 +12,8 @@ dependencies:
     sdk: flutter
   core:
     path: ../core
+  injector:
+    path: ../injector
 
   http: ^0.13.3
   json_serializable: ^6.5.4

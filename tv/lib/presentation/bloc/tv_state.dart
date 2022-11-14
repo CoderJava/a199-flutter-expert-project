@@ -3,7 +3,6 @@ part of 'tv_bloc.dart';
 abstract class TvState {}
 
 class InitialTvState extends TvState {
-
   @override
   String toString() {
     return 'InitialTvState{}';
@@ -11,7 +10,6 @@ class InitialTvState extends TvState {
 }
 
 class LoadingTvState extends TvState {
-
   @override
   String toString() {
     return 'LoadingTvState{}';
@@ -81,17 +79,20 @@ class SuccessLoadDataTopRatedTvState extends TvState {
 }
 
 class SuccessLoadDataDetailTvState extends TvState {
-  final TvDetail? movieDetail;
-  final List<Tv> movieRecommendations;
+  final TvDetail? tvDetail;
+  final List<Tv> tvRecommendations;
+  final bool isAddedToWatchlist;
 
   SuccessLoadDataDetailTvState({
-    required this.movieDetail,
-    required this.movieRecommendations,
+    required this.tvDetail,
+    required this.tvRecommendations,
+    required this.isAddedToWatchlist,
   });
 
   @override
   String toString() {
-    return 'SuccessLoadDataDetailTvState{movieDetail: $movieDetail, movieRecommendations: $movieRecommendations}';
+    return 'SuccessLoadDataDetailTvState{movieDetail: $tvDetail, movieRecommendations: $tvRecommendations, '
+        'isAddedToWatchlist: $isAddedToWatchlist}';
   }
 }
 
@@ -103,5 +104,31 @@ class SuccessSearchTvState extends TvState {
   @override
   String toString() {
     return 'SuccessSearchTvState{searchResult: $searchResult}';
+  }
+}
+
+class SuccessLoadDataWatchlistTvState extends TvState {
+  final List<Tv> watchlistTv;
+
+  SuccessLoadDataWatchlistTvState({required this.watchlistTv});
+
+  @override
+  String toString() {
+    return 'SuccessLoadDataWatchlistTvState{watchlistTv: $watchlistTv}';
+  }
+}
+
+class SuccessUpdateWatchlistStatusTvState extends TvState {
+  final String message;
+  final bool isAddedToWatchlist;
+
+  SuccessUpdateWatchlistStatusTvState({
+    required this.message,
+    required this.isAddedToWatchlist,
+  });
+
+  @override
+  String toString() {
+    return 'SuccessUpdateWatchlistStatusTvState{message: $message, isAddedToWatchlist: $isAddedToWatchlist}';
   }
 }

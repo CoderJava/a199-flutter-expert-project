@@ -1,8 +1,9 @@
 import 'package:core/core.dart';
 import 'package:flutter/material.dart';
-import 'package:movie/presentation/provider/watchlist_movie_notifier.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:injector/injector.dart' as di;
+import 'package:movie/presentation/bloc/movie_bloc.dart';
 import 'package:movie/presentation/widgets/movie_card_list.dart';
-import 'package:provider/provider.dart';
 
 class WatchlistMoviesPage extends StatefulWidget {
   const WatchlistMoviesPage({super.key});
@@ -11,14 +12,17 @@ class WatchlistMoviesPage extends StatefulWidget {
   State<WatchlistMoviesPage> createState() => _WatchlistMoviesPageState();
 }
 
-class _WatchlistMoviesPageState extends State<WatchlistMoviesPage>
-    with RouteAware {
+class _WatchlistMoviesPageState extends State<WatchlistMoviesPage> with RouteAware {
+  final movieBloc = di.locator<MovieBloc>();
+
   @override
   void initState() {
     super.initState();
-    Future.microtask(() =>
-        Provider.of<WatchlistMovieNotifier>(context, listen: false)
-            .fetchWatchlistMovies());
+    doLoadData();
+  }
+
+  void doLoadData() {
+    movieBloc.add(LoadDataWatchlistMovieEvent());
   }
 
   @override
@@ -29,39 +33,42 @@ class _WatchlistMoviesPageState extends State<WatchlistMoviesPage>
 
   @override
   void didPopNext() {
-    Provider.of<WatchlistMovieNotifier>(context, listen: false)
-        .fetchWatchlistMovies();
+    doLoadData();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Watchlist Movies'),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Consumer<WatchlistMovieNotifier>(
-          builder: (context, data, child) {
-            if (data.watchlistState == RequestState.loading) {
-              return const Center(
-                child: CircularProgressIndicator(),
-              );
-            } else if (data.watchlistState == RequestState.loaded) {
-              return ListView.builder(
-                itemBuilder: (context, index) {
-                  final movie = data.watchlistMovies[index];
-                  return MovieCard(movie);
-                },
-                itemCount: data.watchlistMovies.length,
-              );
-            } else {
-              return Center(
-                key: const Key('error_message'),
-                child: Text(data.message),
-              );
-            }
-          },
+    return BlocProvider<MovieBloc>(
+      create: (_) => movieBloc,
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text('Watchlist Movies'),
+        ),
+        body: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: BlocBuilder<MovieBloc, MovieState>(
+            builder: (context, state) {
+              if (state is LoadingMovieState) {
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              } else if (state is SuccessLoadDataWatchlistMovieState) {
+                return ListView.builder(
+                  itemBuilder: (context, index) {
+                    final movie = state.watchlistMovies[index];
+                    return MovieCard(movie);
+                  },
+                  itemCount: state.watchlistMovies.length,
+                );
+              } else if (state is FailureMovieState) {
+                return Center(
+                  key: const Key('error_message'),
+                  child: Text(state.message),
+                );
+              }
+              return Container();
+            },
+          ),
         ),
       ),
     );
