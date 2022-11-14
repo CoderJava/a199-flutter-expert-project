@@ -36,3 +36,4 @@ export 'presentation/provider/popular_movies_notifier.dart';
 export 'presentation/provider/top_rated_movies_notifier.dart';
 export 'presentation/provider/watchlist_movie_notifier.dart';
 export 'presentation/widgets/movie_card_list.dart';
+export 'presentation/bloc/movie_bloc.dart';
