@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'package:core/core.dart';
-import 'package:http/http.dart' as http;
+import 'package:http/io_client.dart';
 import 'package:tv/data/models/tv_detail_model.dart';
 import 'package:tv/data/models/tv_model.dart';
 import 'package:tv/data/models/tv_response.dart';
@@ -20,7 +20,7 @@ abstract class TvRemoteDataSource {
 }
 
 class TvRemoteDataSourceImpl implements TvRemoteDataSource {
-  final http.Client client;
+  final IOClient client;
 
   TvRemoteDataSourceImpl({required this.client});
 
