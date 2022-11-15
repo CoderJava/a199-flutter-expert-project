@@ -270,6 +270,7 @@ void main() {
       'should emit [LoadingMovieState, SuccessLoadDataDetailMovieState] when all process is success',
       build: () {
         when(mockGetMovieDetail.execute(tId)).thenAnswer((_) async => const Right(testMovieDetail));
+        when(mockGetWatchListStatusMovie.execute(tId)).thenAnswer((_) async => true);
         when(mockGetMovieRecommendations.execute(tId)).thenAnswer((_) async => Right(testMovieList));
         return bloc;
       },
@@ -282,6 +283,7 @@ void main() {
       ],
       verify: (_) {
         verify(mockGetMovieDetail.execute(tId));
+        verify(mockGetWatchListStatusMovie.execute(tId));
         verify(mockGetMovieRecommendations.execute(tId));
       },
     );
@@ -308,6 +310,7 @@ void main() {
       'should emit [LoadingMovieState, FailureMovieState] when failure get movie recommendations',
       build: () {
         when(mockGetMovieDetail.execute(tId)).thenAnswer((_) async => const Right(testMovieDetail));
+        when(mockGetWatchListStatusMovie.execute(tId)).thenAnswer((_) async => true);
         when(mockGetMovieRecommendations.execute(tId)).thenAnswer((_) async => Left(ServerFailure(tMessage)));
         return bloc;
       },
@@ -320,6 +323,7 @@ void main() {
       ],
       verify: (_) {
         verify(mockGetMovieDetail.execute(tId));
+        verify(mockGetWatchListStatusMovie.execute(tId));
         verify(mockGetMovieRecommendations.execute(tId));
       },
     );
@@ -362,6 +366,131 @@ void main() {
       ],
       verify: (_) {
         verify(mockSearchMovies.execute(tQuery));
+      },
+    );
+  });
+
+  group('load data watchlist movie', () {
+    final tEvent = LoadDataWatchlistMovieEvent();
+
+    blocTest(
+      'should emit [SuccessLoadDataWatchlistMovieState] when success load data watchlist movie',
+      build: () {
+        when(mockGetWatchlistMovies.execute()).thenAnswer((_) async => Right(testMovieList));
+        return bloc;
+      },
+      act: (MovieBloc bloc) {
+        return bloc.add(tEvent);
+      },
+      expect: () => [
+        isA<SuccessLoadDataWatchlistMovieState>(),
+      ],
+      verify: (_) {
+        verify(mockGetWatchlistMovies.execute());
+      },
+    );
+
+    blocTest(
+      'should emit [SuccessLoadDataWatchlistMovieState] when failure load data watchlist movie',
+      build: () {
+        when(mockGetWatchlistMovies.execute()).thenAnswer((_) async => Left(ServerFailure(tMessage)));
+        return bloc;
+      },
+      act: (MovieBloc bloc) {
+        return bloc.add(tEvent);
+      },
+      expect: () => [
+        isA<FailureMovieState>(),
+      ],
+      verify: (_) {
+        verify(mockGetWatchlistMovies.execute());
+      },
+    );
+  });
+
+  group('add watchlist movie', () {
+    final tEvent = AddWatchlistMovieEvent(movie: testMovieDetail);
+
+    blocTest(
+      'should emit [SuccessUpdateWatchlistStatusMovieState] when success added to watchlist movie',
+      build: () {
+        when(mockSaveWatchlistMovie.execute(testMovieDetail))
+            .thenAnswer((_) async => const Right(MovieBloc.watchlistAddSuccessMessage));
+        when(mockGetWatchListStatusMovie.execute(testMovieDetail.id)).thenAnswer((_) async => true);
+        return bloc;
+      },
+      act: (MovieBloc bloc) {
+        return bloc.add(tEvent);
+      },
+      expect: () => [
+        isA<SuccessUpdateWatchlistStatusMovieState>(),
+      ],
+      verify: (_) {
+        verify(mockSaveWatchlistMovie.execute(testMovieDetail));
+        verify(mockGetWatchListStatusMovie.execute(testMovieDetail.id));
+      },
+    );
+
+    blocTest(
+      'should emit [SuccessUpdateWatchlistStatusMovieState] when failure added to watchlist movie',
+      build: () {
+        when(mockSaveWatchlistMovie.execute(testMovieDetail)).thenAnswer((_) async => Left(DatabaseFailure(tMessage)));
+        when(mockGetWatchListStatusMovie.execute(testMovieDetail.id)).thenAnswer((_) async => false);
+        return bloc;
+      },
+      act: (MovieBloc bloc) {
+        return bloc.add(tEvent);
+      },
+      expect: () => [
+        isA<SuccessUpdateWatchlistStatusMovieState>(),
+      ],
+      verify: (_) {
+        verify(mockSaveWatchlistMovie.execute(testMovieDetail));
+        verify(mockGetWatchListStatusMovie.execute(testMovieDetail.id));
+      },
+    );
+  });
+
+  group('remove watchlist movie', () {
+    final tEvent = RemoveWatchlistMovieEvent(movie: testMovieDetail);
+
+    blocTest(
+      'should emit [SuccessUpdateWatchlistStatusMovieState] when success remove from watchlist movie',
+      build: () {
+        when(mockRemoveWatchlistMovie.execute(testMovieDetail))
+            .thenAnswer((_) async => const Right(MovieBloc.watchlistRemoveSuccessMessage));
+        when(mockGetWatchListStatusMovie.execute(testMovieDetail.id)).thenAnswer((_) async => false);
+        return bloc;
+      },
+      act: (MovieBloc bloc) {
+        return bloc.add(tEvent);
+      },
+      expect: () => [
+        isA<SuccessUpdateWatchlistStatusMovieState>(),
+      ],
+      verify: (_) {
+        verify(mockRemoveWatchlistMovie.execute(testMovieDetail));
+        verify(mockGetWatchListStatusMovie.execute(testMovieDetail.id));
+      },
+    );
+
+    blocTest(
+      'should emit [SuccessUpdateWatchlistStatusMovieState] when failure remove from watchlist movie',
+      build: () {
+        when(mockRemoveWatchlistMovie.execute(testMovieDetail))
+            .thenAnswer((_) async => Left(DatabaseFailure(tMessage)));
+        when(mockGetWatchListStatusMovie.execute(testMovieDetail.id)).thenAnswer((_) async => true);
+        return bloc;
+      },
+      act: (MovieBloc bloc) {
+        return bloc.add(tEvent);
+      },
+      expect: () => [
+        isA<SuccessUpdateWatchlistStatusMovieState>(),
+      ],
+      verify: (_) {
+        verify(mockRemoveWatchlistMovie.execute(testMovieDetail));
+        verify(mockGetWatchListStatusMovie.execute(testMovieDetail.id));
       },
     );
   });

@@ -127,6 +127,7 @@ void main() {
     final tState = SuccessLoadDataDetailMovieState(
       movieDetail: testMovieDetail,
       movieRecommendations: testMovieList,
+      isAddedToWatchlist: true,
     );
 
     test(
@@ -139,7 +140,7 @@ void main() {
         expect(
           result,
           'SuccessLoadDataDetailMovieState{movieDetail: ${tState.movieDetail}, '
-          'movieRecommendations: ${tState.movieRecommendations}}',
+          'movieRecommendations: ${tState.movieRecommendations}, isAddedToWatchlist: ${tState.isAddedToWatchlist}}',
         );
       },
     );
@@ -156,6 +157,37 @@ void main() {
 
         // assert
         expect(result, 'SuccessSearchMovieState{searchResult: ${tState.searchResult}}');
+      },
+    );
+  });
+
+  group('SuccessLoadDataWatchlistMovieState', () {
+    final tState = SuccessLoadDataWatchlistMovieState(watchlistMovies: testMovieList);
+
+    test(
+      'make sure output toString function',
+      () async {
+        // act
+        final result = tState.toString();
+
+        // assert
+        expect(result, 'SuccessLoadDataWatchlistMovieState{watchlistMovies: ${tState.watchlistMovies}}');
+      },
+    );
+  });
+
+  group('SuccessUpdateWatchlistStatusMovieState', () {
+    final tState = SuccessUpdateWatchlistStatusMovieState(message: 'message', isAddedToWatchlist: true);
+
+    test(
+      'make sure output toString function',
+      () async {
+        // act
+        final result = tState.toString();
+
+        // assert
+        expect(result,
+            'SuccessUpdateWatchlistStatusMovieState{message: ${tState.message}, isAddedToWatchlist: ${tState.isAddedToWatchlist}}');
       },
     );
   });

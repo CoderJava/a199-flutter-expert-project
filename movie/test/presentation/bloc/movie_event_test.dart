@@ -1,6 +1,8 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:movie/presentation/bloc/movie_bloc.dart';
 
+import '../../dummy_data/dummy_objects.dart';
+
 void main() {
   group('LoadDataHomeMovieEvent', () {
     final tEvent = LoadDataHomeMovieEvent();
@@ -88,6 +90,51 @@ void main() {
 
         // assert
         expect(result, 'SearchMovieEvent{query: ${tEvent.query}}');
+      },
+    );
+  });
+
+  group('LoadDataWatchlistMovieEvent', () {
+    final tEvent = LoadDataWatchlistMovieEvent();
+
+    test(
+      'make sure output toString function',
+      () async {
+        // act
+        final result = tEvent.toString();
+
+        // assert
+        expect(result, 'LoadDataWatchlistMovieEvent{}');
+      },
+    );
+  });
+
+  group('AddWatchlistMovieEvent', () {
+    final tEvent = AddWatchlistMovieEvent(movie: testMovieDetail);
+
+    test(
+      'make sure output toString function',
+      () async {
+        // act
+        final result = tEvent.toString();
+
+        // assert
+        expect(result, 'AddWatchlistMovieEvent{movie: ${tEvent.movie}}');
+      },
+    );
+  });
+
+  group('RemoveWatchlistMovieEvent', () {
+    final tEvent = RemoveWatchlistMovieEvent(movie: testMovieDetail);
+
+    test(
+      'make sure output toString function',
+      () async {
+        // act
+        final result = tEvent.toString();
+
+        // assert
+        expect(result, 'RemoveWatchlistMovieEvent{movie: ${tEvent.movie}}');
       },
     );
   });
