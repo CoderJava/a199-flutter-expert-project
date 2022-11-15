@@ -14,6 +14,7 @@ import 'package:tv/domain/usecases/get_watchlist_tv.dart';
 import 'package:tv/domain/usecases/remove_watchlist_tv.dart';
 import 'package:tv/domain/usecases/save_watchlist_tv.dart';
 import 'package:tv/domain/usecases/search_tv.dart';
+import 'package:tv/presentation/bloc/tv_bloc.dart';
 
 @GenerateMocks([
   TvRepository,
@@ -30,6 +31,7 @@ import 'package:tv/domain/usecases/search_tv.dart';
   RemoveWatchlistTv,
   SearchTv,
   GetWatchlistTv,
+  TvBloc,
 ], customMocks: [
   MockSpec<http.Client>(as: #MockHttpClient)
 ])
