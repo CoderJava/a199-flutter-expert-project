@@ -1,4 +1,5 @@
 import 'package:core/data/datasources/db/database_helper.dart';
+import 'package:http/io_client.dart';
 import 'package:mockito/annotations.dart';
 import 'package:movie/data/datasources/movie_local_data_source.dart';
 import 'package:movie/data/datasources/movie_remote_data_source.dart';
@@ -30,6 +31,7 @@ import 'package:movie/domain/usecases/search_movies.dart';
   RemoveWatchlistMovie,
   SearchMovies,
   GetWatchlistMovies,
+  IOClient,
 ], customMocks: [
   MockSpec<http.Client>(as: #MockHttpClient)
 ])

@@ -16,11 +16,11 @@ void main() {
   const baseUrl = 'https://api.themoviedb.org/3';
 
   late TvRemoteDataSourceImpl dataSource;
-  late MockHttpClient mockHttpClient;
+  late MockIOClient mockIOClient;
 
   setUp(() {
-    mockHttpClient = MockHttpClient();
-    dataSource = TvRemoteDataSourceImpl(client: mockHttpClient);
+    mockIOClient = MockIOClient();
+    dataSource = TvRemoteDataSourceImpl(client: mockIOClient);
   });
 
   group('get now playing tv', () {
@@ -35,7 +35,7 @@ void main() {
       'pastikan mengembalikan data list tv ketika menerima respon kode 200',
       () async {
         // arrange
-        when(mockHttpClient.get(Uri.parse('$baseUrl/tv/airing_today?$apiKey')))
+        when(mockIOClient.get(Uri.parse('$baseUrl/tv/airing_today?$apiKey')))
             .thenAnswer((_) async => http.Response(readJson(tPathResponseJson), 200));
 
         // act
@@ -50,7 +50,7 @@ void main() {
       'pastikan throw ServerException ketika menerima respon kode 404 atau yang lainnya',
       () async {
         // arrange
-        when(mockHttpClient.get(Uri.parse('$baseUrl/tv/airing_today?$apiKey')))
+        when(mockIOClient.get(Uri.parse('$baseUrl/tv/airing_today?$apiKey')))
             .thenAnswer((_) async => http.Response('Not Found', 404));
 
         // act
@@ -74,7 +74,7 @@ void main() {
       'pastikan mengembalikan data list tv ketika menerima respon kode 200',
       () async {
         // arrange
-        when(mockHttpClient.get(Uri.parse('$baseUrl/tv/popular?$apiKey')))
+        when(mockIOClient.get(Uri.parse('$baseUrl/tv/popular?$apiKey')))
             .thenAnswer((_) async => http.Response(readJson(tPathResponseJson), 200));
 
         // act
@@ -89,7 +89,7 @@ void main() {
       'pastikan throw ServerException ketika menerima respon kode 404 atau yang lainnya',
       () async {
         // arrange
-        when(mockHttpClient.get(Uri.parse('$baseUrl/tv/popular?$apiKey')))
+        when(mockIOClient.get(Uri.parse('$baseUrl/tv/popular?$apiKey')))
             .thenAnswer((_) async => http.Response('Not Found', 404));
 
         // act
@@ -113,7 +113,7 @@ void main() {
       'pastikan mengembalikan data list tv ketika menerima respon kode 200',
       () async {
         // arrange
-        when(mockHttpClient.get(Uri.parse('$baseUrl/tv/top_rated?$apiKey')))
+        when(mockIOClient.get(Uri.parse('$baseUrl/tv/top_rated?$apiKey')))
             .thenAnswer((_) async => http.Response(readJson(tPathResponseJson), 200));
 
         // act
@@ -128,7 +128,7 @@ void main() {
       'pastikan throw ServerException ketika menerima respon kode 404 atau yang lainnya',
       () async {
         // arrange
-        when(mockHttpClient.get(Uri.parse('$baseUrl/tv/top_rated?$apiKey')))
+        when(mockIOClient.get(Uri.parse('$baseUrl/tv/top_rated?$apiKey')))
             .thenAnswer((_) async => http.Response('Not Found', 404));
 
         // act
@@ -153,7 +153,7 @@ void main() {
       'pastikan mengembalikan data detail tv ketika menerima respon kode 200',
       () async {
         // arrange
-        when(mockHttpClient.get(Uri.parse('$baseUrl/tv/$tId?$apiKey')))
+        when(mockIOClient.get(Uri.parse('$baseUrl/tv/$tId?$apiKey')))
             .thenAnswer((_) async => http.Response(readJson(tPathResponseJson), 200));
 
         // act
@@ -168,7 +168,7 @@ void main() {
       'pastikan throw ServerException ketika menerima respon kode 404 atau yang lainnya',
       () async {
         // arrange
-        when(mockHttpClient.get(Uri.parse('$baseUrl/tv/$tId?$apiKey')))
+        when(mockIOClient.get(Uri.parse('$baseUrl/tv/$tId?$apiKey')))
             .thenAnswer((_) async => http.Response('Not Found', 404));
 
         // act
@@ -193,7 +193,7 @@ void main() {
       'pastikan mengembalikan data list tv ketika menerima respon kode 200',
       () async {
         // arrange
-        when(mockHttpClient.get(Uri.parse('$baseUrl/tv/$tId/recommendations?$apiKey')))
+        when(mockIOClient.get(Uri.parse('$baseUrl/tv/$tId/recommendations?$apiKey')))
             .thenAnswer((_) async => http.Response(readJson(tPathResponseJson), 200));
 
         // act
@@ -208,7 +208,7 @@ void main() {
       'pastikan throw ServerException ketika menerima respon kode 404 atau yang lainnya',
       () async {
         // arrange
-        when(mockHttpClient.get(Uri.parse('$baseUrl/tv/$tId/recommendations?$apiKey')))
+        when(mockIOClient.get(Uri.parse('$baseUrl/tv/$tId/recommendations?$apiKey')))
             .thenAnswer((_) async => http.Response('Not Found', 404));
 
         // act
@@ -233,7 +233,7 @@ void main() {
       'pastikan mengembalikan data list tv ketika menerima respon kode 200',
       () async {
         // arrange
-        when(mockHttpClient.get(Uri.parse('$baseUrl/search/tv?$apiKey&query=$tQuery')))
+        when(mockIOClient.get(Uri.parse('$baseUrl/search/tv?$apiKey&query=$tQuery')))
             .thenAnswer((_) async => http.Response(readJson(tPathResponseJson), 200));
 
         // act
@@ -248,7 +248,7 @@ void main() {
       'pastikan throw ServerException ketika menerima respon kode 404 atau yang lainnya',
       () async {
         // arrange
-        when(mockHttpClient.get(Uri.parse('$baseUrl/search/tv?$apiKey&query=$tQuery')))
+        when(mockIOClient.get(Uri.parse('$baseUrl/search/tv?$apiKey&query=$tQuery')))
             .thenAnswer((_) async => http.Response('Not Found', 404));
 
         // act
