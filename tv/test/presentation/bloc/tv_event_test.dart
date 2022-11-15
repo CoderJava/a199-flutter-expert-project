@@ -1,6 +1,8 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:tv/presentation/bloc/tv_bloc.dart';
 
+import '../../dummy_data/dummy_objects.dart';
+
 void main() {
   group('LoadDataHomeTvEvent', () {
     final tEvent = LoadDataHomeTvEvent();
@@ -88,6 +90,51 @@ void main() {
 
         // assert
         expect(result, 'SearchTvEvent{query: ${tEvent.query}}');
+      },
+    );
+  });
+
+  group('LoadDataWatchlistTvEvent', () {
+    final tEvent = LoadDataWatchlistTvEvent();
+
+    test(
+      'make sure output toString function',
+          () async {
+        // act
+        final result = tEvent.toString();
+
+        // assert
+        expect(result, 'LoadDataWatchlistTvEvent{}');
+      },
+    );
+  });
+
+  group('AddWatchlistTvEvent', () {
+    final tEvent = AddWatchlistTvEvent(tv: testTvDetail);
+
+    test(
+      'make sure output toString function',
+          () async {
+        // act
+        final result = tEvent.toString();
+
+        // assert
+        expect(result, 'AddWatchlistTvEvent{tv: ${tEvent.tv}}');
+      },
+    );
+  });
+
+  group('RemoveWatchlistTvEvent', () {
+    final tEvent = RemoveWatchlistTvEvent(tv: testTvDetail);
+
+    test(
+      'make sure output toString function',
+          () async {
+        // act
+        final result = tEvent.toString();
+
+        // assert
+        expect(result, 'RemoveWatchlistTvEvent{tv: ${tEvent.tv}}');
       },
     );
   });

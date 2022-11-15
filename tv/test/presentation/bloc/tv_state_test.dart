@@ -9,7 +9,7 @@ void main() {
 
     test(
       'make sure output toString function',
-          () async {
+      () async {
         // act
         final result = tState.toString();
 
@@ -24,7 +24,7 @@ void main() {
 
     test(
       'make sure output toString function',
-          () async {
+      () async {
         // act
         final result = tState.toString();
 
@@ -39,7 +39,7 @@ void main() {
 
     test(
       'make sure output toString function',
-          () async {
+      () async {
         // act
         final result = tState.toString();
 
@@ -58,7 +58,7 @@ void main() {
 
     test(
       'make sure output toString function',
-          () async {
+      () async {
         // act
         final result = tState.toString();
 
@@ -66,7 +66,7 @@ void main() {
         expect(
           result,
           'SuccessLoadDataHomeTvState{nowPlayingTv: ${tState.nowPlayingTv}, popularTv: ${tState.popularTv}, '
-              'topRatedTv: ${tState.topRatedTv}}',
+          'topRatedTv: ${tState.topRatedTv}}',
         );
       },
     );
@@ -77,7 +77,7 @@ void main() {
 
     test(
       'make sure output toString function',
-          () async {
+      () async {
         // act
         final result = tState.toString();
 
@@ -95,7 +95,7 @@ void main() {
 
     test(
       'make sure output toString function',
-          () async {
+      () async {
         // act
         final result = tState.toString();
 
@@ -113,7 +113,7 @@ void main() {
 
     test(
       'make sure output toString function',
-          () async {
+      () async {
         // act
         final result = tState.toString();
 
@@ -127,11 +127,12 @@ void main() {
     final tState = SuccessLoadDataDetailTvState(
       tvDetail: testTvDetail,
       tvRecommendations: testTvList,
+      isAddedToWatchlist: true,
     );
 
     test(
       'make sure output toString function',
-          () async {
+      () async {
         // act
         final result = tState.toString();
 
@@ -139,7 +140,8 @@ void main() {
         expect(
           result,
           'SuccessLoadDataDetailTvState{movieDetail: ${tState.tvDetail}, '
-              'movieRecommendations: ${tState.tvRecommendations}}',
+          'movieRecommendations: ${tState.tvRecommendations}, '
+          'isAddedToWatchlist: ${tState.isAddedToWatchlist}}',
         );
       },
     );
@@ -150,12 +152,43 @@ void main() {
 
     test(
       'make sure output toString function',
-          () async {
+      () async {
         // act
         final result = tState.toString();
 
         // assert
         expect(result, 'SuccessSearchTvState{searchResult: ${tState.searchResult}}');
+      },
+    );
+  });
+
+  group('SuccessLoadDataWatchlistTvState', () {
+    final tState = SuccessLoadDataWatchlistTvState(watchlistTv: testTvList);
+
+    test(
+      'make sure output toString function',
+      () async {
+        // act
+        final result = tState.toString();
+
+        // assert
+        expect(result, 'SuccessLoadDataWatchlistTvState{watchlistTv: ${tState.watchlistTv}}');
+      },
+    );
+  });
+
+  group('SuccessUpdateWatchlistStatusTvState', () {
+    final tState = SuccessUpdateWatchlistStatusTvState(message: 'message', isAddedToWatchlist: true);
+
+    test(
+      'make sure output toString function',
+      () async {
+        // act
+        final result = tState.toString();
+
+        // assert
+        expect(result,
+            'SuccessUpdateWatchlistStatusTvState{message: ${tState.message}, isAddedToWatchlist: ${tState.isAddedToWatchlist}}');
       },
     );
   });
