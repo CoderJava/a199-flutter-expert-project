@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:core/core.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injector/injector.dart' as di;
@@ -159,6 +160,13 @@ class TvList extends StatelessWidget {
             padding: const EdgeInsets.all(8),
             child: InkWell(
               onTap: () {
+                FirebaseAnalytics.instance.logEvent(
+                  name: 'select_tv',
+                  parameters: {
+                    'content-type': 'tv',
+                    'title': tv.name ?? '-',
+                  },
+                );
                 Navigator.pushNamed(
                   context,
                   tvDetailRoute,

@@ -1,10 +1,11 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:core/core.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:injector/injector.dart' as di;
 import 'package:movie/domain/entities/movie.dart';
 import 'package:movie/presentation/bloc/movie_bloc.dart';
-import 'package:injector/injector.dart' as di;
 
 class HomeMoviePage extends StatefulWidget {
   const HomeMoviePage({super.key});
@@ -202,6 +203,13 @@ class MovieList extends StatelessWidget {
             padding: const EdgeInsets.all(8),
             child: InkWell(
               onTap: () {
+                FirebaseAnalytics.instance.logEvent(
+                  name: 'select_movie',
+                  parameters: {
+                    'content-type': 'movie',
+                    'title': movie.title ?? '-',
+                  },
+                );
                 Navigator.pushNamed(
                   context,
                   movieDetailRoute,
