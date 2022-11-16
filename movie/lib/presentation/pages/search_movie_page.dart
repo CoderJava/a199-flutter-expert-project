@@ -1,6 +1,7 @@
 import 'package:core/core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:injector/injector.dart' as di;
 import 'package:movie/presentation/bloc/movie_bloc.dart';
 import 'package:movie/presentation/widgets/movie_card_list.dart';
@@ -17,6 +18,8 @@ class _SearchMoviePageState extends State<SearchMoviePage> {
 
   @override
   Widget build(BuildContext context) {
+    final mediaQueryData = MediaQuery.of(context);
+    final widthScreen = mediaQueryData.size.width;
     return BlocProvider<MovieBloc>(
       create: (_) => movieBloc,
       child: Scaffold(
@@ -53,11 +56,22 @@ class _SearchMoviePageState extends State<SearchMoviePage> {
                   } else if (state is SuccessSearchMovieState) {
                     final result = state.searchResult;
                     return result.isEmpty
-                        ? const Expanded(
+                        ? Expanded(
                             child: Center(
-                              child: Text(
-                                'Data not found',
-                                key: Key('data_not_found'),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  SvgPicture.asset(
+                                    'assets/img_no_data.svg',
+                                    width: widthScreen / 2,
+                                  ),
+                                  const SizedBox(height: 16),
+                                  const Text(
+                                    'Data not found',
+                                    key: Key('data_not_found'),
+                                  ),
+                                ],
                               ),
                             ),
                           )
